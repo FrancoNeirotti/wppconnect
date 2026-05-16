@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const wppconnect = require('@wppconnect-team/wppconnect');
+const wppconnect = require('../../');
 var Instancia; //variável que receberá o cliente para ser chamada em outras funções da lib
 //variable that the client will receive to be called in other lib functions
 
@@ -158,11 +158,16 @@ async function startWPP() {
       },
       headless: true, // Headless chrome
       devtools: false, // Open devtools by default
-      useChrome: true, // If false will use Chromium instance
+      useChrome: false, // Use Chromium (required for Linux/Render)
       debug: false, // Opens a debug session
       logQR: true, // Logs QR automatically in terminal
       browserWS: '', // If u want to use browserWSEndpoint
-      browserArgs: [''], // Parameters to be added into the chrome browser instance
+      browserArgs: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ], // Parameters to be added into the chrome browser instance
       puppeteerOptions: {}, // Will be passed to puppeteer.launch
       disableWelcome: false, // Option to disable the welcoming message which appears in the beginning
       updatesLog: true, // Logs info updates automatically in terminal
@@ -184,6 +189,6 @@ async function start(client) {
   client.onStateChange(async (state) => {});
 }
 
-const porta = '3000';
+const porta = process.env.PORT || '3000';
 var server = app.listen(porta);
 console.log('Servidor iniciado na porta %s', server.address().port);
