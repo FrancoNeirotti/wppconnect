@@ -95,6 +95,9 @@
   },
   "dependencies": {
     "express": "^4.21.2",
+    "@whiskeysockets/baileys": "^6.7.18",
+    "@hapi/boom": "^10.0.1",
+    "qrcode": "^1.5.4",
     "@wppconnect/wa-js": "^4.2.0",
     "@wppconnect/wa-version": "^1.5.3941",
     "atob": "^2.1.2",

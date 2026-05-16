@@ -187,6 +187,19 @@ async function startWPP() {
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
+        '--no-zygote',
+        '--single-process',
+        '--disable-extensions',
+        '--disable-background-networking',
+        '--disable-default-apps',
+        '--disable-sync',
+        '--disable-translate',
+        '--hide-scrollbars',
+        '--mute-audio',
+        '--no-first-run',
+        '--disable-infobars',
+        '--disable-features=TranslateUI',
+        '--js-flags=--max-old-space-size=256',
       ], // Parameters to be added into the chrome browser instance
       puppeteerOptions: {}, // Will be passed to puppeteer.launch
       disableWelcome: false, // Option to disable the welcoming message which appears in the beginning
