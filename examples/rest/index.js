@@ -1,11 +1,28 @@
 const express = require('express');
 const app = express();
 const wppconnect = require('../../');
-var Instancia; //variável que receberá o cliente para ser chamada em outras funções da lib
-//variable that the client will receive to be called in other lib functions
+var Instancia;
+var qrCodeBase64 = null; // stores the latest QR code
 
 app.use(express.json()); //parser utizado para requisições via post,....parser used for requests via post,
 app.use(express.urlencoded({ extended: true }));
+
+app.get('/qrcode', function (req, res) {
+  if (!qrCodeBase64) {
+    return res.send('<h2>QR code not available yet. Wait a few seconds and refresh.</h2>');
+  }
+  res.send(`
+    <html>
+      <body style="display:flex;justify-content:center;align-items:center;height:100vh;background:#fff;margin:0">
+        <div style="text-align:center">
+          <h2 style="font-family:sans-serif">Scan this QR with WhatsApp</h2>
+          <img src="${qrCodeBase64}" style="width:300px;height:300px"/>
+          <p style="font-family:sans-serif;color:#888">Refresh the page if it expires</p>
+        </div>
+      </body>
+    </html>
+  `);
+});
 
 app.get('/getconnectionstatus', async function (req, res) {
   console.log('Solicitou status de conexao');
@@ -150,7 +167,10 @@ async function startWPP() {
   await wppconnect
     .create({
       session: 'teste',
-      catchQR: (base64Qr, asciiQR, attempts, urlCode) => {},
+      catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
+        qrCodeBase64 = base64Qr;
+        console.log('QR Code updated, scan at /qrcode');
+      },
       statusFind: (statusSession, session) => {
         console.log('Status Session: ', statusSession); //return isLogged || notLogged || browserClose || qrReadSuccess || qrReadFail || autocloseCalled || disconnectedMobile || deleteToken
         //Create session wss return "serverClose" case server for close
