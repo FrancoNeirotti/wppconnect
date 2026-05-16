@@ -191,7 +191,7 @@ async function startWPP() {
       puppeteerOptions: {}, // Will be passed to puppeteer.launch
       disableWelcome: false, // Option to disable the welcoming message which appears in the beginning
       updatesLog: true, // Logs info updates automatically in terminal
-      autoClose: 60000, // Automatically closes the wppconnect only when scanning the QR code (default 60 seconds, if you want to turn it off, assign 0 or false)
+      autoClose: 0, // Disabled - keep session open until QR is scanned
       tokenStore: 'file', // Define how work with tokens, that can be a custom interface
       folderNameToken: './tokens', //folder name when saving tokens
     })
